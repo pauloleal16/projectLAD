@@ -3,6 +3,7 @@ import pandas as pd
 #import seaborn as sns
 
 
+
 eq = pd.read_csv("earthquakes.csv")
 
 print("\n INFO:")
