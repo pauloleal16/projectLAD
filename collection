@@ -1,0 +1,55 @@
+The dataset contains details of all worldwide earthquakes that have happened
+from 2000-01-01 to 2023-02-11 with magnitude of 2.5 or higher (overall 0.6 mln earthquakes).
+
+'time': representa a data e hora em que ocorreu o terremoto no formato ISO 8601 (ano-mês-dia hora:minuto:segundo).
+'latitude': representa a latitude geográfica do epicentro do terremoto em graus decimais.
+'longitude': representa a longitude geográfica do epicentro do terremoto em graus decimais.
+'depth': representa a profundidade do terremoto em quilômetros.
+'mag': representa a magnitude do terremoto na escala Richter.
+'magType': representa o tipo de magnitude usada para medir o terremoto (por exemplo, "mb" para a magnitude de corpo inteiro ou "ml" para a magnitude local).
+'nst': representa o número de estações sismográficas que registraram o terremoto.
+'gap': representa a diferença máxima, em graus, entre o ângulo de chegada de um sinal sísmico e o ângulo calculado a partir da localização estimada do epicentro do terremoto.
+'dmin': representa a distância mínima, em graus, entre o epicentro do terremoto e a estação sismográfica mais próxima.
+'rms': representa o erro médio quadrático residual do ajuste da onda sísmica em relação ao modelo teórico usado para calcular as magnitudes.
+'net': representa a rede sismográfica responsável por detectar e relatar o terremoto.
+'id': representa um identificador único atribuído a cada terremoto.
+'updated': representa a data e hora em que a entrada foi atualizada pela última vez no formato ISO 8601.
+'place': representa a localização geral do terremoto em termos geográficos.
+'type': representa o tipo de evento sísmico, como "earthquake" para terremotos.
+'horizontalError': representa o erro máximo estimado na localização horizontal do epicentro do terremoto em quilômetros.
+'depthError': representa o erro máximo estimado na profundidade do terremoto em quilômetros.
+'depthError': indica a incerteza (em quilômetros) associada à profundidade do terremoto.
+'magError': indica a incerteza associada à magnitude do terremoto.
+'magNst': indica o número de estações sísmicas que foram usadas para calcular a magnitude do terremoto.
+'status': indica o status do evento sísmico (e.g. Reviewed, Automatic, Manual, etc.).
+'locationSource': indica a fonte que forneceu as informações sobre a localização do terremoto.
+'magSource': indica a fonte que forneceu as informações sobre a magnitude do terremoto.
+
+
+-> Análise das variáveis:
+
+(Quantitativa: discreta, contínua; Qualitativa: nominal, ordinal)
+
+'time': contínua (data e hora)
+'latitude': contínua (graus decimais)
+'longitude': contínua (graus decimais)
+'depth': contínua (quilômetros)
+'mag': contínua (magnitude do terremoto)
+'magType': nominal (tipo de magnitude)
+'nst': discreta (número de estações que registraram o terremoto)
+'gap': contínua (graus)
+'dmin': contínua (distância mínima em graus entre o epicentro e a estação de referência mais próxima)
+'rms': contínua (magnitude residual)
+'net': nominal (rede sismográfica responsável pelo registro do terremoto)
+'id': nominal (identificador único do terremoto)
+'updated': contínua (data e hora da última atualização dos dados)
+'place': nominal (localização do terremoto)
+'type': nominal (tipo de terremoto)
+'horizontalError': contínua (erro horizontal estimado em quilômetros)
+'depthError': contínua (erro vertical estimado em quilômetros)
+'magError': contínua (erro na estimativa da magnitude)
+'magNst': discreta (número de estações que contribuíram para a estimativa da magnitude)
+'status': nominal (status do registro do terremoto)
+'locationSource': nominal (fonte da informação sobre a localização do terremoto)
+'magSource': nominal (fonte da magnitude)
+
