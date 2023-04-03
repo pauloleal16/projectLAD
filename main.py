@@ -57,3 +57,4 @@ eq.dropna(subset=["magSource"], inplace=True)
 
 print(eq.isnull().sum())
 
+
