@@ -1,10 +1,12 @@
 import pandas as pd
-#import matplotlib.pyplot as plt
-#import seaborn as sns
+import matplotlib.pyplot as plt
+import seaborn as sns
 
 
 
 eq = pd.read_csv("earthquakes.csv")
+eq = eq.drop("Unnamed: 0",axis=1)
+
 print(eq)
 print("\n INFO:")
 print(eq.info())
@@ -22,6 +24,8 @@ print(eq.isnull().sum())
 #mediana para variaveis discretas e media para continuas
 
 print("\n SUBSTITUIÇÃO DOS NULOS")
+
+eq.dropna(subset=["magType"], inplace=True)
 
 mediana_nst = eq["nst"].median()
 eq["nst"].fillna(mediana_nst, inplace=True)
@@ -57,4 +61,30 @@ eq.dropna(subset=["magSource"], inplace=True)
 
 print(eq.isnull().sum())
 
+print("\n Correlações")
 
+print(eq.corr(numeric_only=True))
+
+sns.heatmap(eq.corr(numeric_only=True))
+plt.figure()
+
+print("\n Covariancias")
+
+df =eq["mag"].cov(eq["magError"])
+print(df)
+
+plt.scatter(eq["mag"],eq["magError"])
+plt.figure()
+
+df =eq["mag"].cov(eq["nst"])
+print(df)
+
+plt.scatter(eq["mag"],eq["nst"])
+plt.figure()
+
+df =eq["mag"].cov(eq["depth"])
+print(df)
+
+plt.scatter(eq["mag"],eq["depth"])
+
+plt.show()
