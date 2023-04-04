@@ -3,7 +3,6 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 
-
 eq = pd.read_csv("earthquakes.csv")
 eq = eq.drop("Unnamed: 0",axis=1)
 
@@ -86,5 +85,44 @@ df =eq["mag"].cov(eq["depth"])
 print(df)
 
 plt.scatter(eq["mag"],eq["depth"])
+plt.figure()
 
+#HISTOGRAMA DA MAGNITUDE
+plt.hist(eq["mag"])
+plt.figure()
+
+#DISTPLOT MAGNITUDE
+sns.distplot(eq["mag"])
+plt.figure()
+
+
+eq.groupby(["mag"])["depth"].count().plot(kind="bar")  
+plt.figure()
+
+sns.set_style("whitegrid")
+sns.barplot(x='mag', y ='depth', data=eq, estimator=len)
+plt.figure()
+
+"""ax = sns.barplot(x='mag',y ='depth', hue='place', data=eq, estimator=len)
+plt.figure()"""
+
+sns.violinplot(x="mag", data=eq)
+plt.figure()
+
+sns.jointplot(x='mag', y='depth', data=eq)
+plt.figure()
+
+sns.regplot(x='mag', y='depth', data=eq)
+plt.figure()
+
+sns.boxplot(x='mag', y='depth', data=eq)
+plt.figure()
+
+"""sns.boxplot(x='mag',y='depth', hue='place', data=eq)
+plt.figure()"""
+
+sns.stripplot(x='mag', y='depth', data=eq) #SWARMPLOT SUPOSTAMENTE MAS ERRO DISSE STRIPPLOT
+plt.figure()
+
+sns.pairplot(eq)
 plt.show()
