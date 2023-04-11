@@ -1,7 +1,8 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
-
+from sklearn.preprocessing import MinMaxScaler
+from sklearn.preprocessing import StandardScaler
 
 eq = pd.read_csv("earthquakes.csv")
 eq = eq.drop("Unnamed: 0",axis=1)
@@ -125,4 +126,23 @@ sns.stripplot(x='mag', y='depth', data=eq) #SWARMPLOT SUPOSTAMENTE MAS ERRO DISS
 plt.figure()
 
 sns.pairplot(eq)
+plt.figure()
+
+#NORMALIZAÇÃO
+normMinMax=MinMaxScaler()
+#Transform data
+norm=normMinMax.fit_transform(eq[["mag"]].values)
+print(norm)
+plt.plot(norm)
+plt.figure()
+
+#STANDARDIZAÇÃO
+scale=StandardScaler()
+#standardization of dependent variables
+scaled_data=scale.fit_transform(eq.reshape(-1, 1))
+print(eq.mean())
+plt.hist(scaled_data, 100)
 plt.show()
+
+
+
