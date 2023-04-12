@@ -65,47 +65,116 @@ print("\n Correlações")
 
 print(eq.corr(numeric_only=True))
 
-sns.heatmap(eq.corr(numeric_only=True))
+sns.heatmap(eq.corr(numeric_only=True), annot=True)
 plt.figure()
 
+'''
+
+#Gráficos das variáveis
+
+#Displot magnitude
+sns.displot(eq["mag"])
+plt.figure()
+
+#Displot latitude
+sns.displot(eq["latitude"])
+plt.figure()
+
+#Displot longitude
+sns.displot(eq["longitude"])
+plt.figure()
+
+#Histograma depth
+plt.hist(eq["depth"])
+plt.xlabel("depth")
+plt.ylabel("Count")
+plt.figure()
+
+#Histograma nst
+plt.hist(eq["nst"])
+plt.xlabel("nst")
+plt.ylabel("Count")
+plt.figure()
+
+#Displot gap
+sns.displot(eq["gap"])
+plt.figure()
+
+#Displot dmin
+sns.displot(eq["dmin"])
+plt.xlim(0, 15)
+plt.figure()
+
+#Displot rms
+sns.displot(eq["rms"])
+plt.xlim(0, 5)
+plt.figure()
+
+#Displot horizontalError
+sns.displot(eq["horizontalError"])
+plt.figure()
+
+#Histograma depthError
+plt.hist(eq["depthError"])
+plt.xlabel("depthError")
+plt.ylabel("Count")
+plt.figure()
+
+#Displot magError
+sns.displot(eq["magError"])
+plt.figure()
+
+#Displot magNst
+sns.displot(eq["magNst"])
+plt.show()
+
+'''
+
+#comentários para fins de desempenho
+
+'''
 print("\n Covariancias")
 
-df =eq["mag"].cov(eq["magError"])
-print(df)
-
-plt.scatter(eq["mag"],eq["magError"])
+df = eq["mag"].cov(eq["nst"])
+print("mag x nst:", df)
+plt.scatter(eq["mag"], eq["nst"])
+plt.xlabel("mag")
+plt.ylabel("nst")
 plt.figure()
 
-df =eq["mag"].cov(eq["nst"])
-print(df)
-
-plt.scatter(eq["mag"],eq["nst"])
+df = eq["mag"].cov(eq["horizontalError"])
+print("mag x horizontalError:", df)
+plt.scatter(eq["mag"], eq["horizontalError"])
+plt.xlabel("mag")
+plt.ylabel("horizontalError")
 plt.figure()
 
-df =eq["mag"].cov(eq["depth"])
-print(df)
-
-plt.scatter(eq["mag"],eq["depth"])
+df = eq["dmin"].cov(eq["horizontalError"])
+print("dmin x horizontalError:", df)
+plt.scatter(eq["dmin"], eq["horizontalError"])
+plt.xlabel("dmin")
+plt.ylabel("horizontalError")
 plt.figure()
 
-#HISTOGRAMA DA MAGNITUDE
-plt.hist(eq["mag"])
+df = eq["mag"].cov(eq["rms"])
+print("mag x rms:", df)
+plt.scatter(eq["mag"], eq["rms"])
+plt.xlabel("mag")
+plt.ylabel("rms")
 plt.figure()
+'''
 
-#DISTPLOT MAGNITUDE
-sns.distplot(eq["mag"])
-plt.figure()
-
-
-eq.groupby(["mag"])["depth"].count().plot(kind="bar")  
-plt.figure()
+'''
+eq.groupby(["mag"])["depth"].count().plot(kind="bar")
+plt.show()
 
 sns.set_style("whitegrid")
 sns.barplot(x='mag', y ='depth', data=eq, estimator=len)
-plt.figure()
+plt.show()
+'''
 
-"""ax = sns.barplot(x='mag',y ='depth', hue='place', data=eq, estimator=len)
-plt.figure()"""
+# ax = sns.barplot(x='mag',y ='depth', hue='place', data=eq, estimator=len)
+# plt.figure()
 
 sns.violinplot(x="mag", data=eq)
 plt.figure()
@@ -119,15 +188,20 @@ plt.figure()
 sns.boxplot(x='mag', y='depth', data=eq)
 plt.figure()
 
-"""sns.boxplot(x='mag',y='depth', hue='place', data=eq)
-plt.figure()"""
+
+# sns.boxplot(x='mag',y='depth', hue='place', data=eq)
+# plt.figure()
+
 
 sns.stripplot(x='mag', y='depth', data=eq) #SWARMPLOT SUPOSTAMENTE MAS ERRO DISSE STRIPPLOT
 plt.figure()
 
+'''
 sns.pairplot(eq)
-plt.figure()
+plt.show()
+'''
 
+'''
 #NORMALIZAÇÃO
 normMinMax=MinMaxScaler()
 #Transform data
@@ -136,6 +210,7 @@ print(norm)
 plt.plot(norm)
 plt.figure()
 
+
 #STANDARDIZAÇÃO
 scale=StandardScaler()
 #standardization of dependent variables
@@ -143,6 +218,8 @@ scaled_data=scale.fit_transform(eq.reshape(-1, 1))
 print(eq.mean())
 plt.hist(scaled_data, 100)
 plt.show()
+'''
 
-
-
+#Quantos sismos ocorreram por país e fazer um histograma
+#Numero de sismos por ano e fazer histograma
+#Países com mais sismos
