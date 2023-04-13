@@ -268,7 +268,7 @@ for i, row in eq.head(100).iterrows():
 
 sns.displot(eq.head(100)['country'])
 plt.xticks(rotation=90)
-plt.figure()
+plt.show()
 
 
 print("\n TOP 10 Earthquakes")
@@ -276,4 +276,5 @@ top10 = ['mag', 'place', 'time']
 top = eq.sort_values('mag', ascending=False)[top10].head(10).reset_index(drop=True)
 top.index = top.index + 1
 print(top)
+
 
