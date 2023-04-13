@@ -164,6 +164,7 @@ plt.ylabel("rms")
 plt.figure()
 '''
 
+#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 '''
 eq.groupby(["mag"])["depth"].count().plot(kind="bar")
 plt.show()
@@ -171,35 +172,32 @@ plt.show()
 sns.set_style("whitegrid")
 sns.barplot(x='mag', y ='depth', data=eq, estimator=len)
 plt.show()
+
 '''
+#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-# ax = sns.barplot(x='mag',y ='depth', hue='place', data=eq, estimator=len)
-# plt.figure()
-
+'''
 sns.violinplot(x="mag", data=eq)
 plt.figure()
 
-sns.jointplot(x='mag', y='depth', data=eq)
+sns.jointplot(x='mag', y='nst', data=eq)
 plt.figure()
 
-sns.regplot(x='mag', y='depth', data=eq)
+sns.regplot(x='mag', y='nst', data=eq)
 plt.figure()
 
-sns.boxplot(x='mag', y='depth', data=eq)
+eq["magC"] = pd.cut(eq["mag"], bins=[2,3,4,5,6,7,8,9], labels=["2-3", "3-4", "4-5", "5-6", "6-7", "7-8", "8-9"])
+sns.boxplot(x='magC', y='depth', data=eq, width=1)
 plt.figure()
 
-
-# sns.boxplot(x='mag',y='depth', hue='place', data=eq)
-# plt.figure()
-
-
-sns.stripplot(x='mag', y='depth', data=eq) #SWARMPLOT SUPOSTAMENTE MAS ERRO DISSE STRIPPLOT
+eq["magC"] = pd.cut(eq["mag"], bins=[2,3,4,5,6,7,8,9], labels=["2-3", "3-4", "4-5", "5-6", "6-7", "7-8", "8-9"])
+sns.stripplot(x='magC', y='depth', data=eq) #SWARMPLOT SUPOSTAMENTE MAS ERRO DISSE STRIPPLOT
 plt.figure()
-
 '''
+
 sns.pairplot(eq)
 plt.show()
-'''
+
 
 '''
 #NORMALIZAÇÃO
@@ -220,6 +218,6 @@ plt.hist(scaled_data, 100)
 plt.show()
 '''
 
-#Quantos sismos ocorreram por país e fazer um histograma
+#Quantos sismos ocorreram por país e fazer um histograma  ???
 #Numero de sismos por ano e fazer histograma
-#Países com mais sismos
+#Países com mais sismos ???
