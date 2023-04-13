@@ -225,7 +225,7 @@ m.drawcoastlines()
 m.fillcontinents(color='coral',lake_color='aqua')
 m.drawmapboundary()
 m.drawcountries()
-plt.show()
+plt.figure()
 
 
 #Sismos por ano
@@ -249,7 +249,7 @@ sns.displot(eq["country"])
 plt.xlabel("country")
 plt.ylabel("Count")
 plt.xticks(rotation=90)
-plt.show()
+plt.figure()
 
 
 #Função para criar um displot que apresenta o número de sismos por país
@@ -269,7 +269,6 @@ for i, row in eq.head(100).iterrows():
 sns.displot(eq.head(100)['country'])
 plt.xticks(rotation=90)
 plt.show()
-
 
 print("\n TOP 10 Earthquakes")
 top10 = ['mag', 'place', 'time']
