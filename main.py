@@ -4,8 +4,9 @@ import seaborn as sns
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.preprocessing import StandardScaler
 
+
 eq = pd.read_csv("earthquakes.csv")
-eq = eq.drop("Unnamed: 0",axis=1)
+eq = eq.drop("Unnamed: 0", axis=1)
 
 print(eq)
 print("\n INFO:")
@@ -68,8 +69,8 @@ print(eq.corr(numeric_only=True))
 sns.heatmap(eq.corr(numeric_only=True), annot=True)
 plt.figure()
 
-'''
 
+""""
 #Gráficos das variáveis
 
 #Displot magnitude
@@ -89,6 +90,7 @@ plt.hist(eq["depth"])
 plt.xlabel("depth")
 plt.ylabel("Count")
 plt.figure()
+
 
 #Histograma nst
 plt.hist(eq["nst"])
@@ -126,13 +128,13 @@ plt.figure()
 
 #Displot magNst
 sns.displot(eq["magNst"])
-plt.show()
+plt.figure()
+"""
 
-'''
 
 #comentários para fins de desempenho
 
-'''
+"""
 print("\n Covariancias")
 
 df = eq["mag"].cov(eq["nst"])
@@ -142,12 +144,14 @@ plt.xlabel("mag")
 plt.ylabel("nst")
 plt.figure()
 
+
 df = eq["mag"].cov(eq["horizontalError"])
 print("mag x horizontalError:", df)
 plt.scatter(eq["mag"], eq["horizontalError"])
 plt.xlabel("mag")
 plt.ylabel("horizontalError")
 plt.figure()
+
 
 df = eq["dmin"].cov(eq["horizontalError"])
 print("dmin x horizontalError:", df)
@@ -162,21 +166,21 @@ plt.scatter(eq["mag"], eq["rms"])
 plt.xlabel("mag")
 plt.ylabel("rms")
 plt.figure()
-'''
+
 
 #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-'''
+
 eq.groupby(["mag"])["depth"].count().plot(kind="bar")
-plt.show()
+plt.figure()
 
 sns.set_style("whitegrid")
 sns.barplot(x='mag', y ='depth', data=eq, estimator=len)
 plt.show()
 
-'''
+
 #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-'''
+
 sns.violinplot(x="mag", data=eq)
 plt.figure()
 
@@ -191,32 +195,42 @@ sns.boxplot(x='magC', y='depth', data=eq, width=1)
 plt.figure()
 
 eq["magC"] = pd.cut(eq["mag"], bins=[2,3,4,5,6,7,8,9], labels=["2-3", "3-4", "4-5", "5-6", "6-7", "7-8", "8-9"])
-sns.stripplot(x='magC', y='depth', data=eq) #SWARMPLOT SUPOSTAMENTE MAS ERRO DISSE STRIPPLOT
+sns.stripplot(x='magC', y='depth', data=eq)
 plt.figure()
-'''
+"""
 
-sns.pairplot(eq)
+#PAIRPLOT
+colunas_selecionadas = ['mag', 'nst', 'depth', 'horizontalError', 'dmin', 'rms']
+sns.pairplot(eq[colunas_selecionadas])
 plt.show()
 
 
-'''
+"""
 #NORMALIZAÇÃO
-normMinMax=MinMaxScaler()
-#Transform data
-norm=normMinMax.fit_transform(eq[["mag"]].values)
-print(norm)
-plt.plot(norm)
+scaler=MinMaxScaler()
+coluna = eq['mag']
+scaler.fit(coluna.values.reshape(-1, 1))
+coluna_normalizada = scaler.transform(coluna.values.reshape(-1, 1))
+eq_normalizado = pd.DataFrame(coluna_normalizada, columns=['mag'])
+eq_normalizado.hist()
 plt.figure()
 
-
-#STANDARDIZAÇÃO
-scale=StandardScaler()
-#standardization of dependent variables
-scaled_data=scale.fit_transform(eq.reshape(-1, 1))
-print(eq.mean())
-plt.hist(scaled_data, 100)
+#Padronização
+scaler=StandardScaler()
+coluna = eq['gap']
+scaler.fit(coluna.values.reshape(-1,1))
+coluna_padronizada = scaler.transform(coluna.values.reshape(-1,1))
+eq_padronizado = pd.DataFrame(coluna_padronizada, columns=['gap'])
+eq_padronizado.hist()
 plt.show()
-'''
+
+
+#TESTE
+valor_procurado = '2000'
+coluna = 'time'
+numero_de_ocorrencias = (eq[coluna] == valor_procurado).sum()
+print("No ano",valor_procurado,"ocorreram", numero_de_ocorrencias, "sismos")
+"""
 
 #Quantos sismos ocorreram por país e fazer um histograma  ???
 #Numero de sismos por ano e fazer histograma
