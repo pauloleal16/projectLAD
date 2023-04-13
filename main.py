@@ -262,13 +262,15 @@ for i, row in eq.head(100).iterrows():
     lat = row['latitude']
     lon = row['longitude']
     location = geolocator.reverse(f"{lat},{lon}", language='en')
-    print(location.raw)
-    country_name = location.raw['address'].get('country', 'N/A')
-    eq.at[i, 'country'] = country_name
+    if location is not None:
+        print(location.raw)
+        country_name = location.raw['address'].get('country', 'N/A')
+        eq.at[i, 'country'] = country_name
 
 sns.displot(eq.head(100)['country'])
 plt.xticks(rotation=90)
 plt.show()
+
 
 print("\n TOP 10 Earthquakes")
 top10 = ['mag', 'place', 'time']
