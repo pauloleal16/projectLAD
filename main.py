@@ -211,6 +211,13 @@ eq_padronizado = pd.DataFrame(coluna_padronizada, columns=['gap'])
 eq_padronizado.hist()
 plt.figure()
 
+#Top 10 de sismos ordenados por magnitude
+print("\n TOP 10 Earthquakes")
+top10 = ['mag', 'place', 'time']
+top = eq.sort_values('mag', ascending=False)[top10].head(10).reset_index(drop=True)
+top.index = top.index + 1
+print(top)
+
 
 #Mapa mundo com a localização dos sismos
 #Função criada com o apoio do ChatGPT
@@ -263,7 +270,7 @@ for i, row in eq.head(100).iterrows():
     lon = row['longitude']
     location = geolocator.reverse(f"{lat},{lon}", language='en')
     if location is not None:
-        print(location.raw)
+        print("\n",location.raw )
         country_name = location.raw['address'].get('country', 'N/A')
         eq.at[i, 'country'] = country_name
 
@@ -272,10 +279,6 @@ plt.xticks(rotation=90)
 plt.show()
 
 
-print("\n TOP 10 Earthquakes")
-top10 = ['mag', 'place', 'time']
-top = eq.sort_values('mag', ascending=False)[top10].head(10).reset_index(drop=True)
-top.index = top.index + 1
-print(top)
+
 
 
