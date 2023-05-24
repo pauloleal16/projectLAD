@@ -278,7 +278,13 @@ sns.displot(eq.head(100)['country'])
 plt.xticks(rotation=90)
 plt.show()
 
+#regressors; rmse e mae
 
-
-
-
+# Linear regression
+# Lasso & Ridge
+# SVM regressor
+# KNN regressor
+# Decision Trees
+# Random Forest
+# Logistic regression
+# boosting
