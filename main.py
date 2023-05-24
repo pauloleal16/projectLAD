@@ -63,7 +63,6 @@ eq.dropna(subset=["magSource"], inplace=True)
 
 print(eq.isnull().sum())
 
-
 print("\n Correlações")
 print(eq.corr(numeric_only=True))
 sns.heatmap(eq.corr(numeric_only=True), annot=True)
