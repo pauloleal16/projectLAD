@@ -8,6 +8,7 @@ from geopy.geocoders import Nominatim
 
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
+from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import cross_val_score
 import numpy as np
 from sklearn.linear_model import Ridge
@@ -18,7 +19,10 @@ from sklearn.metrics import classification_report
 from sklearn.model_selection import train_test_split
 from sklearn import metrics
 from sklearn import svm
-from sklearn.neighbors import KNeighborsClassifier
+from sklearn.neighbors import KNeighborsRegressor
+from sklearn.tree import DecisionTreeRegressor, plot_tree
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.ensemble import AdaBoostRegressor
 
 
 
@@ -49,6 +53,9 @@ eq.dropna(subset=["magSource"], inplace=True)
 
 
 # COMPONENTE 2
+
+
+#linear
 #remover as indesejadas
 dfInput = eq.drop(columns = ['time','magType','gap','dmin','rms','net','id','updated','place','type','horizontalError','depthError','magError','magNst','status','locationSource','magSource', 'mag'])
 dfOutput = eq['mag']
@@ -73,6 +80,21 @@ pred = lr.predict(dfPred)
 print("predict:", pred)
 
 print("----------------------")
+
+'''
+#Logistic
+X_train, X_test, Y_train, Y_test = train_test_split(dfInput, eq['mag'], test_size=0.3)
+clfLogistic = LogisticRegression(random_state=10)
+clfLogistic.fit(X_train, Y_train)
+
+
+print("score:", clfLogistic.score(X_test,Y_test))
+pred = clfLogistic.predict(X_test)
+print("pred:", pred)
+print("----------------------")
+
+# dá erro pq o resultado deve ter categorias, mag é um valor continuo
+'''
 
 #Ridge
 
@@ -127,7 +149,6 @@ clfSVR.fit(X_train, y_train)
 #Predict the response for test dataset
 y_pred = clfSVR.predict(X_test)
 # Model Accuracy: how often is the classifier correct?
-print("----------Métricas de avaliação-----------")
 print("MAE={:.2f}".format(mean_absolute_error(y_test, y_pred)))
 print("R2={:.2f}".format(r2_score(y_test, y_pred)))
 
@@ -144,20 +165,64 @@ plt.show()
 X_train, X_test, y_train, y_test = train_test_split(dfInput, eq['mag'], test_size=0.3,random_state=109) # 70% training and 30% test
 
 #Create the Classifier
-clf = KNeighborsClassifier(n_neighbors=8)
+clfKNN = KNeighborsRegressor(n_neighbors=8)
 #Train the model using the training sets
-clf.fit(X_train, y_train)
+clfKNN.fit(X_train, y_train)
 #Predict the response for test dataset
-y_pred = clf.predict(X_test)
+y_pred = clfKNN.predict(X_test)
 
 print("-> KNN")
-print("----------Classification report-----------")
-print(classification_report(y_test, y_pred))
+print("MAE= {:.2f}".format(mean_absolute_error(y_test, y_pred)))
+print("R2= {:.2f}".format(r2_score(y_test, y_pred)))
+print("Score:", clfKNN.score(X,Y))
 
-
-xvalues= [2, 4, 6, 8, 10, 12, 14, 16, 18] #number of neighbours
+xvalues = [2, 4, 6, 8, 10, 12, 14, 16, 18] #number of neighbours
 values = [0.91, 0.94, 0.97, 0.98, 0.98, 0.97, 0.98, 0.98, 0.98] #accuracy
 plt.plot(xvalues, values)
 plt.xlabel('Number of neighbours')
 plt.ylabel('Accuracy')
 plt.show()
+print("----------------------")
+
+#Decision Trees
+
+X_train, X_test, y_train, y_test = train_test_split(dfInput, eq['mag'], test_size=0.5, random_state=0)
+
+clfDecisionTrees = DecisionTreeRegressor(max_depth=2)
+#clf=tree.DecisionTreeClassifier(criterion='entropy',max_depth=2)
+clfDecisionTrees.fit(X_train, y_train)
+
+fig = plt.figure(figsize=(10,10))
+_ = plot_tree(clfDecisionTrees, filled=True)
+#fig.savefig("decistion_tree.png")
+plt.show()
+print("----------------------")
+
+# Random Forest
+
+X_train, X_test, Y_train, Y_test = train_test_split(dfInput, eq['mag'], test_size=0.3)
+rf = RandomForestRegressor(max_depth=10, random_state=0)
+clfRF = rf.fit(X_train,Y_train)
+
+print("-> Randoom Forest regressor")
+print("R2={:.2f}".format(r2_score(Y_test,clfRF.predict(X_test))))
+print("MAE={:.2f}".format(mean_absolute_error(Y_test, clfRF.predict(X_test))))
+print("score:", clfRF.score(X,Y))
+print("----------------------")
+
+#Boosting
+
+X_train,X_test,y_train,y_test=train_test_split(dfInput,eq['mag'],test_size=0.3,random_state=0)
+
+rf=AdaBoostRegressor(n_estimators=10,random_state=0)
+
+clfBR = rf.fit(X_train,y_train)
+y_pred = clfBR.predict(X_test)
+
+print("-> boosting")
+print("score:", clfBR.score(X_test,y_test))
+print("MAE:", mean_absolute_error(y_test, y_pred))
+print("R2 score:", r2_score(y_test, y_pred))
+
+# falta ver clustering, PCA e neural networks
+# rever alguns pormenores para ter certeza dos valores
