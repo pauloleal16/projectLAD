@@ -23,6 +23,8 @@ from sklearn.neighbors import KNeighborsRegressor
 from sklearn.tree import DecisionTreeRegressor, plot_tree
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.ensemble import AdaBoostRegressor
+from sklearn.neural_network import MLPRegressor
+from sklearn.decomposition import PCA
 
 
 
@@ -81,6 +83,7 @@ print("predict:", pred)
 
 print("----------------------")
 
+
 '''
 #Logistic
 X_train, X_test, Y_train, Y_test = train_test_split(dfInput, eq['mag'], test_size=0.3)
@@ -114,9 +117,8 @@ rcv.fit(X,Y)
 #print("Alpha:{:.2f}".format(rcv.alpha_))
 #o valor de alpha fornece os mesmos valores
 print(rcv.coef_)
-print(rcv.score(X,Y))
+print("score:", rcv.score(X,Y))
 print("----------------------")
-
 
 #Lasso
 
@@ -157,6 +159,36 @@ sns.scatterplot(x=X_train[:, 0], y=X_train[:, 1], hue=y_train)
 plt.title("SVR")
 plt.show()
 '''
+
+
+#SVR regressor
+
+# print the names of the 13 features (X)
+print("-> SVR")
+# Split dataset into training set and test set
+X_train, X_test, y_train, y_test = train_test_split(dfInput, eq['mag'],test_size=0.3,random_state=109) # 70% training and 30% test
+
+#Create a svm Classifier
+clfSVR = svm.SVR(kernel='linear') # Linear Kernel
+#####clf = svm.SVC(kernel='poly') # Poly Kernel
+
+pca = PCA(n_components=2)
+X_train_pca = pca.fit_transform(X_train)
+X_test_pca=pca.transform(X_test)
+
+
+#Train the model using the training sets
+clfSVR.fit(X_train_pca, y_train)
+#Predict the response for test dataset
+y_pred = clfSVR.predict(X_test_pca)
+# Model Accuracy: how often is the classifier correct?
+print("MAE={:.2f}".format(mean_absolute_error(y_test, y_pred)))
+print("R2={:.2f}".format(r2_score(y_test, y_pred)))
+
+plt.figure(figsize=(8, 8))
+sns.scatterplot(x=X_train[:, 0], y=X_train[:, 1], hue=y_train)
+plt.title("SVR")
+plt.show()
 
 
 #KNN
@@ -220,9 +252,20 @@ clfBR = rf.fit(X_train,y_train)
 y_pred = clfBR.predict(X_test)
 
 print("-> boosting")
-print("score:", clfBR.score(X_test,y_test))
-print("MAE:", mean_absolute_error(y_test, y_pred))
-print("R2 score:", r2_score(y_test, y_pred))
+print("score:", clfBR.score(X,Y))
+print("MAE={:.2f}".format(mean_absolute_error(Y_test, clfBR.predict(X_test))))
+print("R2={:.2f}".format(r2_score(Y_test,clfBR.predict(X_test))))
 
-# falta ver clustering, PCA e neural networks
-# rever alguns pormenores para ter certeza dos valores
+
+#neural networks
+
+X_train,X_test,y_train,y_test=train_test_split(dfInput,eq['mag'],test_size=0.3)
+
+rfNeural = MLPRegressor(max_iter=300, solver='lbfgs', alpha=0.01)
+clfNeural=rfNeural.fit(X_train,Y_train)
+
+print("-> Neural networks")
+print("MAE={:.2f}".format(mean_absolute_error(Y_test, clfNeural.predict(X_test))))
+print("R2={:.2f}".format(r2_score(Y_test,clfNeural.predict(X_test))))
+print("score:", clfNeural.score(X_test,Y_test))
+
