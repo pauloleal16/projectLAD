@@ -8,7 +8,6 @@ from geopy.geocoders import Nominatim
 
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
-from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import cross_val_score
 import numpy as np
 from sklearn.linear_model import Ridge
@@ -87,7 +86,7 @@ print("----------------------")
 
 #Ridge
 
-X = dfInput
+X = dfInput.values
 Y = eq['mag']
 lrr = Ridge()
 lrr.fit(X,Y)
@@ -119,7 +118,8 @@ print("score:", clf.score(X,Y))
 print("mean scores", scores.mean())
 print("Predict:",clf.predict(dfN))
 print("----------------------")
-
+'''
+'''
 ''' 
 #SVR regressor without PCA
 
@@ -163,9 +163,10 @@ plt.title("SVR")
 plt.show()
 '''
 
+
 #KNN
 
-X_train, X_test, y_train, y_test = train_test_split(dfInput, eq['mag'], test_size=0.3,random_state=109) # 70% training and 30% test
+X_train, X_test, y_train, y_test = train_test_split(dfInput.values, eq['mag'], test_size=0.3,random_state=109) # 70% training and 30% test
 clfKNN = KNeighborsRegressor(n_neighbors=8)
 clfKNN.fit(X_train, y_train)
 y_pred = clfKNN.predict(X_test)
@@ -189,7 +190,7 @@ plt.show()
 print("----------------------")
 
 #Decision Trees
-X_train, X_test, y_train, y_test = train_test_split(dfInput, eq['mag'], test_size=0.5, random_state=0)
+X_train, X_test, y_train, y_test = train_test_split(dfInput.values, eq['mag'], test_size=0.5, random_state=0)
 clfDecisionTrees = DecisionTreeRegressor(max_depth=2)
 #clf=tree.DecisionTreeClassifier(criterion='entropy',max_depth=2)
 clfDecisionTrees.fit(X_train, y_train)
@@ -203,22 +204,22 @@ print("----------------------")
 
 
 # Random Forest
-X_train, X_test, Y_train, Y_test = train_test_split(dfInput, eq['mag'], test_size=0.3)
+X_train, X_test, Y_train, Y_test = train_test_split(dfInput.values, eq['mag'], test_size=0.3)
 rf = RandomForestRegressor(max_depth=10, random_state=0)
 clfRF = rf.fit(X_train,Y_train)
 
-scores = cross_val_score(clfRF, X, Y, cv=5)
+#scores = cross_val_score(clfRF, X, Y, cv=5)
 
 print("\n-> Randoom Forest regressor")
 print("R2={:.2f}".format(r2_score(Y_test,clfRF.predict(X_test))))
 print("MAE={:.2f}".format(mean_absolute_error(Y_test, clfRF.predict(X_test))))
 print("score:", clfRF.score(X,Y))
-print("mean scores", scores.mean())
+#print("mean scores", scores.mean())
 print("Predict:",clfRF.predict(dfN))
 print("----------------------")
 
 #Boosting
-X_train,X_test,y_train,y_test=train_test_split(dfInput,eq['mag'],test_size=0.3,random_state=0)
+X_train,X_test,y_train,y_test=train_test_split(dfInput.values,eq['mag'],test_size=0.3,random_state=0)
 rf=AdaBoostRegressor(n_estimators=10,random_state=0)
 
 clfBR = rf.fit(X_train,y_train)
@@ -235,7 +236,7 @@ print("Predict:",clfBR.predict(dfN))
 
 
 #Neural networks
-X_train,X_test,y_train,y_test=train_test_split(dfInput,eq['mag'],test_size=0.3)
+X_train,X_test,y_train,y_test=train_test_split(dfInput.values,eq['mag'],test_size=0.3)
 
 rfNeural = MLPRegressor(max_iter=200, solver='lbfgs', alpha=0.01)
 clfNeural=rfNeural.fit(X_train,Y_train)
